@@ -87,7 +87,6 @@ def gerar_grafico_comparativo(resultados, save_path="mrt_comparativo.png"):
     x_labels = [f"{r['n_requests']} reqs\n{r['concurrency']} conc." for r in resultados]
     mrt_values = [r["mrt"] for r in resultados]
 
-    # Índices para o eixo x
     x = range(len(resultados))
 
     plt.plot(x, mrt_values, marker='o', linestyle='-', color='blue', label='MRT')
@@ -132,7 +131,6 @@ if __name__ == "__main__":
             "mrt": mrt
         })
 
-    # Gera gráfico comparativo ao final
     os.makedirs("/mnt", exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     output_path = f"/mnt/mrt_comparativo_{timestamp}.png"

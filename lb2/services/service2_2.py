@@ -19,8 +19,8 @@ def process_request(data_str):
         else:
             timestamps["T_lb2_to_service2_1"] = None
 
-        # Simula processamento pesado com multiplicação de grandes matrizes
-        size = 1000  # Tamanho da matriz (ajuste para mais/menos carga)
+        
+        size = 1000  
         A = np.random.rand(size, size)
         B = np.random.rand(size, size)
         result_matrix = np.dot(A, B)

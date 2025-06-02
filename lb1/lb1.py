@@ -25,7 +25,7 @@ class LoadBalancer1:
             data = conn.recv(2048).decode()
             
             print(f"[LB1] Requisição recebida de {addr}", flush=True)
-            self.request_queue.put((conn, addr, data))  # Enfileira a requisição
+            self.request_queue.put((conn, addr, data))  
         except Exception as e:
             print(f"[LB1] Erro ao receber requisição: {e}", flush=True)
             conn.close()
@@ -51,10 +51,9 @@ class LoadBalancer1:
             print(f"[LB1] Erro ao processar requisição: {e}", flush=True)
         finally:
             conn.close()
-            self.semaphore.release()  # Libera o "slot"
+            self.semaphore.release()  
 
     def start(self):
-        # Inicia thread que processa a fila
         threading.Thread(target=self.process_queue, daemon=True).start()
 
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -67,5 +66,5 @@ class LoadBalancer1:
 
 
 if __name__ == "__main__":
-    lb1 = LoadBalancer1(max_workers=2)  # pode ajustar o número de workers
+    lb1 = LoadBalancer1(max_workers=2)  
     lb1.start()

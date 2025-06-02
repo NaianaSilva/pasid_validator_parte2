@@ -24,7 +24,7 @@ class LoadBalancer2:
         try:
             data = conn.recv(2048).decode()
             print(f"[LB2] Requisição recebida de {addr}", flush=True)
-            self.request_queue.put((conn, addr, data))  # Enfileira a requisição
+            self.request_queue.put((conn, addr, data))  
         except Exception as e:
             print(f"[LB2] Erro ao receber requisição: {e}", flush=True)
             conn.close()
@@ -46,14 +46,11 @@ class LoadBalancer2:
             timestamps = request["timestamps"]
             timestamps["lb2_received"] = round(t_lb2_received, 6)
 
-            # Calcula tempo service1 -> lb2
             service_sent = timestamps.get("service_sent")
             timestamps["T_service1_to_lb2"] = round(t_lb2_received - service_sent, 6) if service_sent else None
 
-            # Timestamp de saída do LB2
             timestamps["lb2_sent"] = round(time.time(), 6)
 
-            # Chama o service via round-robin
             updated_data = json.dumps(request)
             service = self.round_robin()
             result = service(updated_data)
@@ -78,5 +75,5 @@ class LoadBalancer2:
                 threading.Thread(target=self.handle_client, args=(conn, addr), daemon=True).start()
 
 if __name__ == "__main__":
-    lb2 = LoadBalancer2(max_workers=2)  # ajustável conforme capacidade dos serviços
+    lb2 = LoadBalancer2(max_workers=2)  
     lb2.start()
