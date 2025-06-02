@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+
+  lb1:
+    build: ./lb1
+    container_name: lb1
+    ports:
+      - "5001:5001"
+    networks:
+      - app-network
+
+  lb2:
+    build: ./lb2
+    container_name: lb2
+    ports:
+      - "6001:6001"
+    networks:
+      - app-network
+
+  source:
+    build: ./source
+    container_name: source
+    depends_on:
+      - lb1
+    networks:
+      - app-network
+    volumes:
+      - ./graficos:/mnt
+
+networks:
+  app-network:
+    driver: bridge
